@@ -83,7 +83,7 @@ class ReadElement(beam.DoFn):
 def run(argv=None):
     
     #xml config
-    gcsFileName="gs://pod-fr-retail-kaggle/xlarge.xml"
+    gcsFileName="gs://.../xlarge.xml"
     xml_tag_name = 'Order'
     number_of_partition = None
     if number_of_partition==None:
@@ -93,7 +93,7 @@ def run(argv=None):
         number_of_partition= int(total_bytes/1000000)
     
     #pipeline config
-    project='pod-fr-retail'
+    project='YOUR-PROJECT-ID'
     zone='europe-west1-c'
     region='europe-west1'
     worker_machine_type='n1-standard-1'
