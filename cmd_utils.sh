@@ -9,6 +9,9 @@ gsutil cp gs://dataflow-samples/wikipedia_edits/wiki_data-000000000000.json gs:/
 python3 main.py --dataflow_service_options=enable_prime --experiments=enable_vertical_memory_autoscaling
 
 
+python3 dataflow_bq_storageapi_v2.py --dataflow_service_options=enable_prime --prebuild_sdk_container_engine=cloud_build --docker_registry_push_url=europe-west1-docker.pkg.dev/pod-fr-retail/demok8/beam_bq_storage_api
+python3 dataflow_bq_storageapi_v2.py --dataflow_service_options=enable_prime --experiments=enable_vertical_memory_autoscaling --sdk_container_image=europe-west1-docker.pkg.dev/pod-fr-retail/demok8/beam_bq_storage_api/beam_python_prebuilt_sdk:latest
+python3 dataflow_bq_storageapi_v2.py --dataflow_service_options=enable_prime  --sdk_container_image=europe-west1-docker.pkg.dev/pod-fr-retail/demok8/beam_bq_storage_api/beam_python_prebuilt_sdk:latest
 cd dataflow-pipeline-examples
 git add .
 git commit -m "update"
