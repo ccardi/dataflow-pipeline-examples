@@ -42,7 +42,6 @@ class ProcessLineFromFile(beam.DoFn):
 class EntityWrapper(object):
     """
     Create a Cloud Datastore entity from the given string.
-
     Namespace and project are taken from the parent key.
     """
     def __init__(self, kind, parent_key):
@@ -75,19 +74,19 @@ def run(argv=None):
     
     with beam.Pipeline(DataflowRunner(),options=options) as p:
         readlines= (p
-            | "New file in bucket" >> beam.io.ReadFromPubSub(
+            | "GCS Nofification in PubSub" >> beam.io.ReadFromPubSub(
                 subscription="projects/pod-fr-retail/subscriptions/dataflow-subscription"
                 , with_attributes=True
                 , timestamp_attribute="eventTime")
-            | "Get fileName From PubSub Message" >> beam.ParDo(GetFileNameFromPubSubMessage()) 
-            | 'Read and stream a file line by line' >> beam.io.ReadAllFromText()
+            | "Extract fileName from PubSub message" >> beam.ParDo(GetFileNameFromPubSubMessage()) 
+            | 'Read file and stream line by line' >> beam.io.ReadAllFromText()
         )
         
         first_branch= (readlines
-        | "Read Each Line, find a sentence, log 1" >> beam.ParDo(ProcessLineFromFile()))
+        | "Read lines, find , log 1" >> beam.ParDo(ProcessLineFromFile()))
         
         second_branch= (readlines
-        | "Read Each Line, find a sentence, push to entity" >> beam.ParDo(ProcessLineFromFile())
+        | "Read lines" >> beam.ParDo(ProcessLineFromFile())
         | "Create Entity" >> beam.Map(EntityWrapper(kind, ancestor_key).make_entity)
         #| "Write Entity to Datastore" >> WriteToDatastore('pod-fr-retail',throttle_rampup=True, hint_num_workers=3)
         )
