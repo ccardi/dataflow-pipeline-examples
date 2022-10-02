@@ -22,7 +22,7 @@ def create_sessions():
     requested_session.table = table
     requested_session.data_format = bigquery_storage_v1.types.DataFormat.AVRO
     requested_session.read_options.selected_fields.append("orderId")
-    #requested_session.read_options.row_restriction = 'state = "WA"'
+    #requested_session.read_options.c = 'state = "WA"'
     modifiers = None
     parent = "projects/{}".format(project_id)
     session = client.create_read_session(
